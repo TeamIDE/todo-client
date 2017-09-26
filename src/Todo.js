@@ -1,27 +1,33 @@
 import React, { Component } from 'react';
 import * as ReactBootstrap from 'react-bootstrap';
-import axios from 'axios'
+import axios from 'axios';
+import TodoList from './TodoList.js';
 
 class Todo extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state={
             name: '',
             description: '',
         }
-        this.onSubmit=this.handleSubmit.bind(this);
+        this.handleName = this.handleName.bind(this);
+        this.handleDesc = this.handleDesc.bind(this);
+        this.handleSubmit=this.handleSubmit.bind(this); 
     }
+    
+    handleName(event) {
+        this.setState({name: event.target.value})
+    }
+
+    handleDesc(event) {
+        this.setState({description: event.target.value})
+    }
+
     handleSubmit(e) {
         e.preventDefault();
-        var payload = {
-            name: 'test!',
-            description: 'test!'
-        };
-        var data = new FormData();
-        data.append('json', JSON.stringify(payload));
         axios.post('http://localhost:5000/new', {
-            name: 'This is a name',
-            description: 'This is a desc'
+            name: this.state.name,
+            description: this.state.description
         })
         .then(function(response) {
             console.log(response);
@@ -29,34 +35,41 @@ class Todo extends Component {
             console.log(error);
         });
     }
+
     render() {
         return(
-            <ReactBootstrap.Grid>
-                <ReactBootstrap.Row>
-                    <ReactBootstrap.Col xs={6} md={4} xsOffset={4}>
-                        <form onSubmit={this.onSubmit}>
-                            <ReactBootstrap.FormControl
-                                id="name"
-                                type="text"
-                                placeholder="Create a new Todo"
-                                onChange = {(event, newValue)=>this.setState({name:newValue})}
-                            />
-                            <ReactBootstrap.FormControl
-                                id="description"
-                                type="text"
-                                placeholder="Enter a description"
-                                onChange = {(event, newValue)=>this.setState({description:newValue})}
-                            />
-                            <ReactBootstrap.Button type="submit">
-                                Submit
-                            </ReactBootstrap.Button>
-                        </form>
-                    </ReactBootstrap.Col>
-                </ReactBootstrap.Row>
-            </ReactBootstrap.Grid>
+            <div>
+                <div id="newTodo">
+                    <ReactBootstrap.Grid>
+                        <ReactBootstrap.Row>
+                            <ReactBootstrap.Col xs={6} md={4} xsOffset={4}>
+                                <form onSubmit={this.handleSubmit}>
+                                    <ReactBootstrap.FormGroup>
+                                        <ReactBootstrap.FormControl
+                                            id="name"
+                                            type="text"
+                                            placeholder="Create a new Todo"
+                                            onChange={this.handleName}
+                                        />
+                                        <ReactBootstrap.FormControl
+                                            id="description"
+                                            type="text"
+                                            placeholder="Enter a description"
+                                            onChange={this.handleDesc}
+                                        />
+                                        <ReactBootstrap.Button type="submit">Submit</ReactBootstrap.Button>
+                                    </ReactBootstrap.FormGroup>
+                                </form>
+                            </ReactBootstrap.Col>
+                        </ReactBootstrap.Row>
+                    </ReactBootstrap.Grid>
+                </div>
+                <div>
+                    <TodoList />
+                </div>
+            </div>
         ) 
     }
 }        
           
 export default Todo;
-          
