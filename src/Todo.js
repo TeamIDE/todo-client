@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import * as ReactBootstrap from 'react-bootstrap';
 import axios from 'axios';
-import TodoList from './TodoList.js';
 
 class Todo extends Component {
     constructor(props) {
@@ -63,9 +62,6 @@ class Todo extends Component {
                             </ReactBootstrap.Col>
                         </ReactBootstrap.Row>
                     </ReactBootstrap.Grid>
-                </div>
-                <div>
-                    <TodoList />
                 </div>
             </div>
         ) 
