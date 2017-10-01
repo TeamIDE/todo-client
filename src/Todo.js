@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import TodoForm from './TodoForm.js';
 import TodoList from './TodoList.js';
+import './style.css';
 
 class Todo extends Component {
     constructor(props) {
@@ -34,10 +35,12 @@ class Todo extends Component {
     }
     render() {
         return (
-            <div>
-                <h2>Todos</h2>
-                <TodoForm handleTodoSubmit={ this.handleTodoSubmit } />
-                <TodoList data={ this.state.data } />
+            <div className='container'>
+                <div>
+                    <h2>Todos</h2>
+                    <TodoForm handleTodoSubmit={ this.handleTodoSubmit } />
+                    <TodoList data={ this.state.data } />
+                </div>
             </div>
         )
     }

@@ -1,0 +1,16 @@
+.container {
+    margin: auto;
+    background-color: #DADADA; 
+    text-align: center;
+    width: 20%;
+    border-radius: 25px;
+ }
+
+ input {
+     border-radius: 25px;
+ }
+
+ .submit {
+     background-color: #FA002F;
+ }
+ 

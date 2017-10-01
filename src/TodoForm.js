@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './style.css';
 
 class TodoForm extends Component {
     constructor(props) {
@@ -31,21 +32,26 @@ class TodoForm extends Component {
     render() {
         return (
             <form onSubmit={ this.handleSubmit }>
-                <input
-                    type='text'
-                    placeholder='Name...'
-                    value={ this.state.name }
-                    onChange={ this.handleNameChange }
-                />
-                <input
-                    type='description'
-                    placeholder='Description...'
-                    value={ this.state.description}
-                    onChange={ this.handleDescriptionChange }
-                />
+                <div>
+                    <input
+                        type='text'
+                        placeholder='Name...'
+                        value={ this.state.name }
+                        onChange={ this.handleNameChange }
+                    />
+                </div>
+                <div>
+                    <input
+                        type='description'
+                        placeholder='Description...'
+                        value={ this.state.description}
+                        onChange={ this.handleDescriptionChange }
+                    />
+                </div>
                 <input
                     type='submit'
                     value='Create'
+                    className='submit'
                 />
             </form>
         )
