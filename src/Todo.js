@@ -1,71 +1,46 @@
 import React, { Component } from 'react';
-import * as ReactBootstrap from 'react-bootstrap';
 import axios from 'axios';
+import TodoForm from './TodoForm.js';
+import TodoList from './TodoList.js';
 
 class Todo extends Component {
     constructor(props) {
         super(props);
-        this.state={
-            name: '',
-            description: '',
-        }
-        this.handleName = this.handleName.bind(this);
-        this.handleDesc = this.handleDesc.bind(this);
-        this.handleSubmit=this.handleSubmit.bind(this); 
+        this.state = {
+            data: []
+        };
+        this.loadTodos=this.loadTodos.bind(this);
+        this.handleTodoSubmit=this.handleTodoSubmit.bind(this);
     }
-    
-    handleName(event) {
-        this.setState({name: event.target.value})
-    }
-
-    handleDesc(event) {
-        this.setState({description: event.target.value})
-    }
-
-    handleSubmit(e) {
-        e.preventDefault();
-        axios.post('http://localhost:5000/new', {
-            name: this.state.name,
-            description: this.state.description
-        })
-        .then(function(response) {
-            console.log(response);
-        }).catch(function (error) {
-            console.log(error);
+    loadTodos() {
+        axios.get(this.props.url)
+        .then(res => {
+            this.setState({ data: res.data });
         });
     }
-
-    render() {
-        return(
-            <div>
-                <div id="newTodo">
-                    <ReactBootstrap.Grid>
-                        <ReactBootstrap.Row>
-                            <ReactBootstrap.Col xs={6} md={4} xsOffset={4}>
-                                <form onSubmit={this.handleSubmit}>
-                                    <ReactBootstrap.FormGroup>
-                                        <ReactBootstrap.FormControl
-                                            id="name"
-                                            type="text"
-                                            placeholder="Create a new Todo"
-                                            onChange={this.handleName}
-                                        />
-                                        <ReactBootstrap.FormControl
-                                            id="description"
-                                            type="text"
-                                            placeholder="Enter a description"
-                                            onChange={this.handleDesc}
-                                        />
-                                        <ReactBootstrap.Button type="submit">Submit</ReactBootstrap.Button>
-                                    </ReactBootstrap.FormGroup>
-                                </form>
-                            </ReactBootstrap.Col>
-                        </ReactBootstrap.Row>
-                    </ReactBootstrap.Grid>
-                </div>
-            </div>
-        ) 
+    handleTodoSubmit(todo) {
+        let todos = this.state.data;
+        let newTodos = todos.concat([todo]);
+        this.setState({ data: newTodos });
+        axios.post(this.props.url, todo)
+        .catch(err => {
+            console.error(err);
+            this.setState({ data: todos });
+        });
     }
-}        
-          
+    componentDidMount() {
+        this.loadTodos();
+        setInterval(this.loadTodos, this.props.pollInterval);
+    }
+    render() {
+        return (
+            <div>
+                <h2>Todos</h2>
+                <TodoForm handleTodoSubmit={ this.handleTodoSubmit } />
+                <TodoList data={ this.state.data } />
+            </div>
+        )
+    }
+}
+
 export default Todo;
